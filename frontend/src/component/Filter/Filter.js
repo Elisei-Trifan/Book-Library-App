@@ -1,8 +1,12 @@
-import { useDispatch } from 'react-redux'
-import { setTitleFilter } from '../../redux/slices/filterSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setTitleFilter,
+  selectTitleFilter,
+} from '../../redux/slices/filterSlice'
 import './Filter.css'
 
 const Filter = () => {
+  const titleFilter = useSelector(selectTitleFilter)
   const dispatch = useDispatch()
 
   const handleFilter = (e) => {
@@ -12,6 +16,7 @@ const Filter = () => {
     <div className="app-block filter">
       <div className="filter-group">
         <input
+          value={titleFilter}
           onChange={handleFilter}
           type="text"
           placeholder="Filter by title..."
