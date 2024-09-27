@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addBook, fetchBook } from '../../redux/slices/booksSlice'
+import { addError } from '../../redux/slices/errorSlice'
 
 import booksData from '../../data/books.json'
 import createBookWithId from '../../utils/createBookWithID'
@@ -28,6 +29,8 @@ const BookForm = () => {
       dispatch(addBook(book))
       setTitle('')
       setAuthor('')
+    } else {
+      dispatch(addError('Введите автора и название книги'))
     }
   }
 
