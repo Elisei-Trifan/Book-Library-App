@@ -50,10 +50,17 @@ const booksSlice = createSlice({
   //   })
   // },
   extraReducers: {
+    [fetchBook.pending]: (state) => {
+      state.isLoadingViaAPI = true
+    },
     [fetchBook.fulfilled]: (state, action) => {
+      state.isLoadingViaAPI = false
       if (action.payload.title && action.payload.author) {
         state.books.push(createBookWithId(action.payload, 'API'))
       }
+    },
+    [fetchBook.rejected]: (state) => {
+      state.isLoadingViaAPI = false
     },
   },
 })
