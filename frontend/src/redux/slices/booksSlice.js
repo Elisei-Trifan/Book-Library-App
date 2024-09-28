@@ -35,11 +35,11 @@ const booksSlice = createSlice({
       }
     },
     toggleFavorite: (state, action) => {
-      return state.books.map((book) =>
-        book.id === action.payload
-          ? { ...book, isFavorite: !book.isFavorite }
-          : book
-      )
+      state.books.forEach((book) => {
+        if (book.id === action.payload) {
+          book.isFavorite = !book.isFavorite
+        }
+      })
     },
   },
   // extraReducers: (builder) => {
@@ -70,3 +70,4 @@ export default booksSlice.reducer
 export const { addBook, deleteBook, toggleFavorite } = booksSlice.actions
 
 export const selectBooks = (state) => state.books.books
+export const selectIsLoadingViaAPI = (state) => state.books.isLoadingViaAPI
