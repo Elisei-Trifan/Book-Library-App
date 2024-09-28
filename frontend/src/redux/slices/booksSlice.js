@@ -3,7 +3,10 @@ import axios from 'axios'
 import createBookWithId from '../../utils/createBookWithID'
 import { addError } from './errorSlice'
 
-const initialState = []
+const initialState = {
+  books: [],
+  isLoadingViaAPI: false,
+}
 
 export const fetchBook = createAsyncThunk(
   'books/fetchBook',
@@ -23,13 +26,16 @@ const booksSlice = createSlice({
   initialState,
   reducers: {
     addBook: (state, action) => {
-      state.push(action.payload)
+      state.books.push(action.payload)
     },
     deleteBook: (state, action) => {
-      return state.filter((book) => action.payload !== book.id)
+      return {
+        ...state,
+        books: state.books.filter((book) => action.payload !== book.id),
+      }
     },
     toggleFavorite: (state, action) => {
-      return state.map((book) =>
+      return state.books.map((book) =>
         book.id === action.payload
           ? { ...book, isFavorite: !book.isFavorite }
           : book
@@ -46,7 +52,7 @@ const booksSlice = createSlice({
   extraReducers: {
     [fetchBook.fulfilled]: (state, action) => {
       if (action.payload.title && action.payload.author) {
-        state.push(createBookWithId(action.payload, 'API'))
+        state.books.push(createBookWithId(action.payload, 'API'))
       }
     },
   },
@@ -56,4 +62,4 @@ export default booksSlice.reducer
 
 export const { addBook, deleteBook, toggleFavorite } = booksSlice.actions
 
-export const selectBooks = (state) => state.books
+export const selectBooks = (state) => state.books.books
